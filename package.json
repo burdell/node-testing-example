@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand",
+    "coverage": "jest --runInBand --coverage",
     "go": "node src/index.js"
   },
   "keywords": [],
