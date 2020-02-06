@@ -1,4 +1,4 @@
-const { baseUrl } = require('../../../config');
+const { baseUrl } = require('../../config');
 
 class ChangeUserRequest {
   constructor(payload) {
