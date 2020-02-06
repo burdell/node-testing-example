@@ -1,21 +1,18 @@
 describe('Router', () => {
   let router;
-  let validateMock;
   let userServiceMock;
   let mockEvent;
-  let mockModel;
+  let changeUserModel;
 
   beforeEach(() => {
     jest.resetModules();
     jest.resetAllMocks();
 
-    validateMock = jest.fn();
-    jest.doMock('../services/validate', () => validateMock);
-
     userServiceMock = jest.fn().mockResolvedValue({});
-    jest.doMock('../services/user', () => userServiceMock);
+    jest.doMock('../user', () => userServiceMock);
 
-    mockModel = 'somemodel';
+    router = require('.');
+    changeUserModel = require('./events/UserChangeEvent');
 
     mockEvent = {
       type: 'UserChange',
@@ -24,17 +21,24 @@ describe('Router', () => {
         name: 'George P Burdell',
         email: 'gpburdell@gmail.com'
       },
-      model: mockModel
+      model: changeUserModel
     };
-
-    router = require('.');
   });
 
-  it('routes an event', async () => {
+  it('routes a UserChange event', async () => {
     await router(mockEvent);
 
-    expect(validateMock).toHaveBeenCalledWith(mockModel, mockEvent.payload);
     expect(userServiceMock).toHaveBeenCalledWith(mockEvent.payload);
+  });
+
+  it('does not route a UserChange event with invalid data', async () => {
+    mockEvent.payload.userId = undefined;
+
+    try {
+      await router(mockEvent);
+    } catch (e) {
+      expect(e.message).toEqual('Bad data');
+    }
   });
 
   it('throws an error for invalid events', async () => {

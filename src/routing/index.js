@@ -1,5 +1,5 @@
 const validate = require('../services/validate');
-const updateUser = require('../services/user');
+const updateUser = require('../user');
 
 async function appRouting(event) {
   switch (event.type) {

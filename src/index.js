@@ -1,5 +1,5 @@
 const router = require('./routing');
-const model = require('./models/events/UserChangeEvent');
+const model = require('./routing/events/UserChangeEvent');
 
 router({
   type: 'UserChange',
